@@ -1,0 +1,227 @@
+教材http://dic.vbird.tw/
+
+虛擬教室
+http://172.31.255.236/gocloud/student/main.php
+http://dicgo.vbird.tw
+
+
+在家需先安裝remote	網址:https://virt-manager.org
+遠端	execte: remote
+
+帳密:
+4060e055_server
+4060e055_client
+kawai520
+
+linux帳密：
+student
+student@linux
+155
+
+student
+mystdgo
+
+centos7
+
+9/20
+切換帳號for root
+sudo su -(給一般帳號有root權限的)
+su -
+密碼student@linux
+
+關機		poweroff
+歷史指令	history	
+登出		exit
+查詢IP		ifconfig
+目前核心版本	uname -r
+最新核心版本	ll /lib/modules
+重新啟動	reboot
+顯示ip位址	ip addr show
+顯示時間	uptime
+重開機		reboot
+看目前資料夾	pwd
+看被連線的對方IP arp -n
+
+
+安裝網路
+nmcli conn show		看狀態
+nmcli conn show eth0	看eth0網卡資料
+nmcli conn up eth0	連線eth0網卡
+ping 168.95.1.1		連線測試
+				
+
+安裝vim
+yum install vim-enhan* bash-comp*	(*簡略)or
+yum install vim-enhanced bash-completion
+
+升級(-y	自動帶yes)
+yum -y update
+
+mail -s  'ypdate' root <
+
+安裝ifconfig
+yum install net-tools
+
+切換圖形介面
+systemctl isolate graphical.target
+
+切回文字介面
+systemctl isolate multi-user.target
+
+就是指定語言環境是C語言環境
+LANG=C yum grouplist
+
+安裝圖形化介面
+yum groupinstall "GNOME Desktop"
+
+查詢預設(文字/圖形)
+systemctl get-default
+
+設定開機預設圖形化介面
+systemctl get-default graphical.target
+
+
+
+vim
+
+升級(-y	自動帶yes)(&> 重新導入到??)
+yum -y update &> /dev/shm/yum.my.log
+
+設定開機預設文字介面
+systemctl set-default multi-user.target
+
+開啟開機設定排班(分/時/天/月/周  *代表所有時間 )
+vim /etc/crontab
+
+0 2 * * * root /root/bin/yum.sh
+
+設定yum.sh權限全部加入x(執行)
+chmod a+x yum.sh
+
+創建資料夾bin
+mkdir bin
+
+進入資料夾bin
+cd bin
+
+看裡面的資料
+cat yum.sh
+
+yum search epel
+
+yum install epel-release
+
+yum repolist
+
+vim /etc/yum.repos.d/epel.repo
+
+yum --enablerepo=epel search ntfs-3g
+
+yum --enablerepo=epel install ntfs-3g
+
+
+安裝namp
+yum install nmap
+
+ip addr show
+
+nmap 172.16.9.210(自己IP)
+nmap -sP 172.16.0.0/24
+nmap 172.16.0.61
+
+看目前開放的port
+netstat -tulnp
+
+查詢cups.開頭有哪些
+systemctl stop cups.(在加兩下tab)
+
+停止cups.path的port
+systemctl stop cups.path
+
+禁用cups.path的port
+systemctl disable cups.path  
+
+顯示啟動清單
+virsh list
+
+
+****特殊刪除dns*
+
+安裝libvirtd
+yum install libvirt-client
+
+摧毀它
+virsh net-destroy default 
+
+設定開機也不啟動
+virsh net-undefine default
+
+
+觀察系統使用哪種SELinux
+getenforce
+
+關查SELinux模式變化
+setenforce
+
+
+
+預設SELinux(更改這檔案的中間enforcing)
+vim /etc/selinux/config
+
+
+觀察目前的 SELinux 狀態
+ sestatus
+
+查詢現階段 SELinux 所支援的各項規則與放行否(後面是查詢包含ftp的)
+getsebool -a | grep ftp
+
+查詢每個 SELinux 規則的簡易說明
+semanage boolean --list
+
+修改檔案
+chcon -t krb5_conf_t /etc/hosts
+
+復原修改
+restorecon -Rv /etc
+
+檢查有沒有setrouble
+yum search setrouble
+
+
+安裝setrouble
+yum install setrouble*
+
+說明解決方法
+tail /var/log/messages
+
+安裝vsftpd
+yum install vsftpd
+
+
+開啟程式vsftpd
+systemctl start vsftpd
+
+看他的port
+netstat -tulnp
+
+
+rpm -ql vsftpd
+
+再次查看
+ll -Zd /var/ftp
+
+
+----
+
+設定ip跟遮罩(要先關連線)(不打也是預設255.255.255.0)
+ifconfig eth0 192.168.5.155 netmask 255.255.255.0
+
+改變 gateway 的方法
+route add default gw 192.168.5.254
+
+查看有沒有正確找到google
+dig www.google.com 
+
+
+
+

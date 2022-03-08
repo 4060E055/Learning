@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+	<style>
+			button{
+				width:30px;
+				height:30px;
+			}
+			button[disabled=disabled]{
+				background-color:white;
+			}
+		</style>
+<script>
+	set_num_mine=3;
+	num_mine=set_num_mine;
+	width=5;
+	height=5;
+	click_num_mines=0;
+	mine_place=new Array(width-1);
+
+	
+	for(var i=0;i<width;i++){//宣告二維陣列
+	mine_place[i]=new Array(height-1);
+	}
+	
+	function start_set()
+	{
+		 set_area=document.getElementById("set_area");//get id 
+
+		for(var i=0;i<width;i++)
+		{
+			for(var j=0;j<height;j++)
+			{
+			
+			create_area=document.createElement("button");//create button
+			create_area.setAttribute("id",i+"-"+j);//set id
+			create_area.setAttribute("onclick","click_mine(this)");//if clice button.execute function
+		
+			create_area.setAttribute("oncontextmenu","mark(this)");//標記		
+			create_area.innerHTML="&nbsp&nbsp";//set space
+		
+			set_area.appendChild(create_area);//add to mine
+		
+			mine_place[i][j]=0;//set mine place
+		
+			}
+			set_area.innerHTML+="<br>";//wrap
+		}
+	document.getElementById("last_mines").innerHTML=num_mine;//set last mine
+	//set_time();
+	}
+	
+	function set_time()//countdown
+	{
+
+	time=document.getElementById("last_time");
+	time.innerHTML-=1;
+	
+		if (time.innerHTML==0)
+		{	
+		alert("Time Up.");
+		gameover();	
+		return;
+		}
+	setTimeout("set_time()",1000);
+	}
+	
+	function click_mine(obj)
+	{
+		if (click_num_mines==0)
+			set_mine(obj);//set mine place
+		
+		now_x=parseInt(obj.id.split("-")[0]);//get click button place
+		now_y=parseInt(obj.id.split("-")[1]);	
+		
+	click_num_mines++;//number click +1
+		num_click=document.getElementById("num_click").innerHTML=click_num_mines;
+	
+	
+		if(mine_place[now_x][now_y]==0)
+		{//設定踩下去是空白的話往外延伸
+		obj.innerHTML=mine_place[now_x][now_y];
+		obj.setAttribute("disabled","disabled");//set only be clicked once
+		
+		}
+		else if(mine_place[now_x][now_y]=="X")
+		{//If you step on the mine gameover
+			alert("Lose");
+			gameover();
+		}
+	
+		else if (click_num_mines==width*height-set_num_mine)
+		{
+			obj.innerHTML=mine_place[now_x][now_y];
+			alert("Win");
+			gameover();
+		}
+		else
+		{
+			obj.innerHTML=mine_place[now_x][now_y];	
+			obj.setAttribute("disabled","disabled");//set only be clicked once
+		}
+	
+
+		
+	}
+
+
+	function set_mine(obj)//set mine place
+	{
+			set_time();
+			now_x=parseInt(obj.id.split("-")[0]);//get click button place
+			now_y=parseInt(obj.id.split("-")[1]);//為了設定第一個踩下的一定不是地雷
+			
+			while(num_mine!=0)
+			{
+			i=Math.floor(Math.random()*width);//設定亂數地雷
+			j=Math.floor(Math.random()*height);
+				if(mine_place[i][j]!="X" && (i!=now_x && j!=now_y))
+				{
+				mine_place[i][j]="X";			
+				num_mine--;
+				}
+			}
+			
+			for(i=0;i<width;i++)//set area mine number
+			{
+				for(j=0;j<height;j++)
+				{
+					if(mine_place[i][j]!="X")//if not mine ,set area numbers of mine
+					{
+						for(k=-1;k<2;k++)//area mine number
+						{
+							for(z=-1;z<2;z++)
+							{//如果k跟z!=1  and 減完後的數值不超出範圍					
+								if ((k!=0)&&(z!=0))
+								{
+									if(((i+k)>=0 && (i+k)<width) && ((j+z)>=0 && (j+z)<height))
+									{				
+										if(mine_place[i+k][j+z]=="X")
+										{
+										mine_place[i][j]+=1;//area mine+1
+										}
+									}
+								}
+							}
+						}
+					}
+					document.getElementById("test").innerHTML+=mine_place[i][j]+"/";
+				}
+				document.getElementById("test").innerHTML+="<br>"
+			}	
+	}	
+	
+	function mark(obj)
+	{
+		if(obj.innerHTML=="♥")//un mark
+		{
+		obj.innerHTML="&nbsp&nbsp"
+		last_mines.innerHTML =parseInt(last_mines.innerHTML)+1;
+		
+		}
+		else if(parseInt(last_mines.innerHTML)-1>=0)//mark
+		{
+		obj.innerHTML="♥";
+		obj.removeAttribute("disabled");
+		last_mines.innerHTML =parseInt(last_mines.innerHTML)-1;
+	
+		}
+	}
+	
+	function gameover()
+	{
+	clearTimeout();//time out
+		for(i=0;i<width;i++)
+		{
+			for(j=0;j<height;j++)
+			{
+			obj=document.getElementById(i+"-"+j);
+			obj.setAttribute("disabled","disabled");
+				if(mine_place[i][j]=="X" && obj.innerHTML!="♥")
+				{
+					obj.innerHTML="X";		
+				}
+			}
+		
+		}
+		document.getElementById("gameover").innerHTML="<h3>You can re-game by clicking F5.<h3>";
+	}
+	
+	
+</script>
+
+<title>mine</title>
+</head>
+
+<body onload="start_set()" onContextMenu="window.event.returnValue=false">
+
+<h1>踩地雷遊戲</h1>
+Last time :
+<div id ="last_time">60</div>
+Last mines :
+<div id="last_mines">0</div>
+
+Number of clicks：
+<div id = "num_click">0</div>
+
+
+<div id = "set_area"></div>
+<br>
+<div id = "gameover"></div>
+<div id = "test"></div>
+
+</body>
+
+
+</html>

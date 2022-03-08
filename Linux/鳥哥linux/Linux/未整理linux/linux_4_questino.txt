@@ -1,0 +1,39 @@
+A.一般所謂的防火牆，依據達成方式的不同，主要分為那兩種基本的防火牆？
+　A:封包過濾式防火牆、軟體防火牆。
+
+B.CentOS 8 預設提供那兩種『防火牆服務』呢？
+  A:iptables、firewalld
+
+C.承上，那達成該種防火牆服務的指令又個別為何呢？
+  A:iptables、firewalld-cmd
+
+D.CentOS 8 防火牆使用 Netfilter ，該機制提供的預設表格中，上課用到的是那兩個？個別針對哪種主機 (本機或後端主機) 來進行封包的過濾與重導向？
+  A:filter針對本機管理，nat針對後端主機管理
+
+E.針對 Linux 本機的封包進出來說， Netfilter 主要提供的是那一個表格 (table) 的那兩個鏈 (chain) 來管理的？
+  A:filter表格的INPUT跟OUTPUT
+
+F.那一個指令可以觀察 Netfilter 的預設政策、各鏈的流向與防火牆的規則順序？
+  A:iptables-save
+
+G.承上，那一個檔案主要就是在紀錄這些設定的？
+  A: /tec/sysconfig/iptables
+
+H.針對 ssh 來說，底下的錯誤要怎麼改善？寫下改善後的語法：
+iptables -A INPUT -s 192.168.0.0/16 --dport 22 -j ACCEPT
+  A:iptables -A INPUT -s 192.168.0.0/16 -p tcp --dport 22 -j ACCEPT
+
+I.在 iptables 的動作中， REJECT 與 DROP 有什麼差別？
+  A:REJECT會明確回應拒絕封包，DROP會直接丟棄封包且不給予回應
+
+J.啟動核心的 IP 轉遞功能時，(1)需要修改哪個設定檔？ (2)實際上變更的是那一個核心檔案的值？
+A: (1)修改 /etc/sysctl.conf  (2) /proc/sys/net/ipv4/ip_forward
+
+K.所謂的 IP 分享器的 IP 偽裝功能，只要是修改那一個 Netfilter 的表格與鏈？
+A:修改nat表格的PREROUTING
+
+L.所謂的 port mapping 的功能，主要是修改那一個 Netfilter 的表格與鏈？
+ A:net表格的POSTROUTING
+
+M.承上面兩題，哪個被稱為 SNAT 或 DNAT 呢？
+ A:SNAT:PREROUTING、DNAT:POSTROUTING

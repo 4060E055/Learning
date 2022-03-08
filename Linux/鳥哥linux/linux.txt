@@ -1,0 +1,72 @@
+教材http://dic.vbird.tw/
+
+虛擬教室
+http://172.31.255.236/gocloud/student/main.php
+http://dicgo.vbird.tw
+
+
+在家需先安裝remote	網址:https://virt-manager.org/download/
+遠端	execte: remote
+75796241@hinet.net
+帳密:
+4060e055_server
+4060e055_client
+kawai520
+
+linux帳密：
+student
+student@linux
+
+
+9/20
+切換帳號for root
+sudo su -
+密碼student@linux
+
+關機		poweroff
+歷史指令	history	
+登出		exit
+查詢IP		ifconfig
+目前核心版本	uname -r
+最新核心版本	ll /lib/modules
+
+
+安裝網路
+nmcli conn show		看狀態
+nmcli conn show eth0	看eth0網卡資料
+nmcli conn up eth0	安裝eth0網卡
+ping 168.95.1.1		連線測試
+				
+
+安裝vim
+yum install vim-enhan* bash-comp*	(簡略)or
+yum install vim-enhanced bash-completion
+
+升級
+yum update
+
+安裝ifconfig
+yum install net-tools
+
+切換圖形介面
+systemctl isolate graphical.target
+
+切回文字介面
+systemctl isolate multi-user.target
+
+指定語言環境是C語言環境
+LANG=C yum grouplist
+
+安裝圖形化介面
+yum groupinstall "GNOME Desktop"
+
+查詢預設(文字/圖形)
+systemctl get-default
+
+設定開機預設圖形化介面
+systemctl get-default graphical.target
+
+設定開機預設文字介面
+systemctl set-default multi-user.target
+
+

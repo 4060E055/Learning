@@ -1,0 +1,8 @@
+coffee	100
+tea	80
+juice	80
+milk	70
+water	60
+milktea	110
+cake	60
+oolong	50

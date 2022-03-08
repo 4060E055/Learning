@@ -1,0 +1,13 @@
+id
+Position站名
+EName英文站名
+X經度
+Y緯度
+CArea區域名
+EArea英文區域名
+CAddress地址
+EAddress英文地址
+AvailableCNT目前車輛數量
+EmpCNT可還空位數
+UpdateTime更新時間
+
